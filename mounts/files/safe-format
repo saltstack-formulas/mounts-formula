@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Script to check if a disk is formatted and format it if not
+# Only does ext4 atm
+
+function help() {
+cat << EOF
+
+Usage: $0 device
+
+EOF
+exit
+}
+
+device=$1
+
+if [[ -z "${device}" ]]; then
+    echo "No device specified"
+    help
+fi
+
+# Get the actual devicename incase we're passed a link
+function get_device() {
+    if readlink -f $1 > /dev/null; then
+        device=$(readlink -f $1)
+    else
+        return 1
+    fi
+}
+
+function check_formatted() {
+    if blkid "${1}" > /dev/null; then
+        return 0
+    fi
+
+    file_type=$(file --special-files "${1}")
+    case ${file_type} in
+        *filesystem*) return 0;;
+    esac
+
+    return 1
+}
+
+function format_disk() {
+    mkfs.ext4 -E lazy_itable_init=0,lazy_journal_init=0 -F ${1}
+}
+
+if ! get_device "${device}"; then
+    echo "changed=false comment=\"Unable to detect ${device}\""
+    exit 1
+elif check_formatted "${device}"; then
+    echo "changed=false comment=\"${device} already formatted\""
+    exit 0
+elif ! format_disk "${device}"; then
+    echo "changed=false comment=\"Unable to format ${device}\""
+    exit 1
+fi
+
+echo "changed=true comment=\"${device} formatted as ext4\""
+exit 0
+
