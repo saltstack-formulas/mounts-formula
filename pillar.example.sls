@@ -14,6 +14,7 @@ mounts:
       fstype: ext4
       mkmnt: True         # Default is False, True used for testing
       opts: defaults
+      hidden_opts: async  # At least hidden on some nfs mounts
       dump: 0
       pass_num: 0
       config: /etc/fstab

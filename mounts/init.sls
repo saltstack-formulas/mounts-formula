@@ -24,6 +24,7 @@ mounts-mount-{{ name }}:
     - fstype: {{ opts.get('fstype', 'ext4') }}
     - mkmnt: {{ opts.get('mkmnt', False) }}
     - opts: {{ opts.get('opts', 'defaults') }}
+    - hidden_opts: {{ opts.get('hidden_opts', None) }}
     - dump: {{ opts.get('dump', '0') }}
     - pass_num: {{ opts.get('pass_num', '0') }}
     - config: {{ opts.get('config', '/etc/fstab') }}
