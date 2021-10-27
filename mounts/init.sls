@@ -23,7 +23,8 @@ mounts-mount-{{ name }}:
     - device: {{ opts.get('device') }}
     - fstype: {{ opts.get('fstype', 'ext4') }}
     - mkmnt: {{ opts.get('mkmnt', False) }}
-    - opts: {{ opts.get('opts', 'defaults') }}
+    - opts: {{ opts.get('opts', 'defaults')|json }}
+    - hidden_opts: {{ opts.get('hidden_opts', None)|json }}
     - dump: {{ opts.get('dump', '0') }}
     - pass_num: {{ opts.get('pass_num', '0') }}
     - config: {{ opts.get('config', '/etc/fstab') }}
