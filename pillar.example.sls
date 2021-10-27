@@ -13,8 +13,12 @@ mounts:
       format: True        # Default is False, True used for testing
       fstype: ext4
       mkmnt: True         # Default is False, True used for testing
+      # opts and hidden_opts can be either directly a list, or a string that
+      # will be split on commas
       opts: defaults
-      hidden_opts: async  # At least hidden on some nfs mounts
+      hidden_opts:
+      # async is hidden on at least some nfs mounts
+      - async
       dump: 0
       pass_num: 0
       config: /etc/fstab
